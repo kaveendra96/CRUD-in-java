@@ -208,6 +208,8 @@ public class Form extends javax.swing.JFrame {
         
         try {
            if(addDataToDatabase()>0){
+            ResultSet rst=viewDataFromDatabase();
+            showTable(rst);
                JOptionPane.showMessageDialog(this,"Add succsesful");
            }
            else{
@@ -215,8 +217,7 @@ public class Form extends javax.swing.JFrame {
          
            }
            
-            ResultSet rst=viewDataFromDatabase();
-            showTable(rst);
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this,ex);
         } catch (ClassNotFoundException ex) {
@@ -245,16 +246,9 @@ public class Form extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            
-                String sql="Delete From Person where id=?";
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root", "1234");
-            PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setObject(1, txtName4.getText());
-                int res=stm.executeUpdate();
-            
-            
-            if(res>0){
+    
+            if(deleteInDatabase()>0){
+                showTable(viewDataFromDatabase());
                 JOptionPane.showMessageDialog(this,"Delete sucess");
             }
             else{
@@ -364,7 +358,7 @@ public class Form extends javax.swing.JFrame {
     }
 
     private int deleteInDatabase() throws ClassNotFoundException, SQLException {
-        String sql="Delete from Person where id=?";
+        String sql="Delete from Person where name=?";
         Class.forName("com.mysql.jdbc.Driver");
         Connection conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/project", "root","1234");
         PreparedStatement stm=conn.prepareStatement(sql);
